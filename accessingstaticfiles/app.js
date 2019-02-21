@@ -11,8 +11,7 @@ res.render('index')
 
 
 app.get('/contact', function (req, res) {
-  console.log(req.query);
-  res.render('contact', {qs : req.query})
+  res.render('contact')
 // res.send('This is the contact page');
 });
 

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Exercies</title>
+    <link href='/assets/stylesheets/styles.css'  rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div class='main'>
+      <table class='table'>
+        <tr>
+          <th>Full name</th>
+          <th>Degree</th>
+          <th>Program</th>
+        </tr>
+        <tr>
+          <td><%= student.firstname %>&nbsp;<%= student.lastname %></td>
+          <td><%= student.degree %></td>
+          <td><%= student.program %></td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <% include ./image.ejs %>
+    </div>
+
+  </body>
+</html>
