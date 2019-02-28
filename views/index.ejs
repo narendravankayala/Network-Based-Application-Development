@@ -4,45 +4,25 @@
 <title>Internships</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-      <link type="text/css" rel="stylesheet" href="assets/styles.css"  media="screen"/>
-
+  <link type="text/css" rel="stylesheet" href="assets/css/style.css"  media="screen"/>
 </head>
 <body>
-  <% include partials/nav.ejs %>
 
+<div class="signedstatus"><span>NotYetSignedIn</span></div>
+<% include partials/header.ejs %>
 
-  <div class="signedstatus"><span>NotYetSignedIn</span></div>
-<header>
-    <h2><img src="images/InternshipLogo.png" alt="logo" class="imglogo">Welcome to the Portal of Internsips</h2>
-</header>
-
-<div class="nav-bar">
-    <a href="#">Sign In</a> | <a href="myitems.html">My Jobs</a> | <a href="#">Cart</a>
-</div>
+<% include partials/user-navigation.ejs %>
 
 <section>
-  <nav>
-      <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="categories.html">Categories</a></li>
-          <li><a href="#">Store</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact Us</a></li>
-      </ul>
-  </nav>
+  <% include partials/site-navigation.ejs %>
 
-  <article>
+<article>
+
     <h2>This is the Portal for extensive search for Summer Internships </h2>
     <h2>The job posters will post the intern position avaialble at their companies and the user can apply to the position with just one click away after creating the profile</h2>
-    <h2>This is the Portal for extensive search for Summer Internships </h2>
-    </article>
+  
+</article>
 </section>
-
-<footer>
-    <p>&copy; COI Pvt Ltd<p>
-</footer>
-
+<% include partials/footer.ejs %>
 </body>
 </html>

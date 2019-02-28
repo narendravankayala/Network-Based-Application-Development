@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Internships</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+      <link type="text/css" rel="stylesheet" href="assets/css/style.css"  media="screen"/>
+      <link type="text/css" rel="stylesheet" href="assets/css/font-awesome-4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+  <div class="signedstatus"><span>NotYetSignedIn</span></div>
+  <% include partials/header.ejs %>
+  <% include partials/user-navigation.ejs %>
+<section>
+
+<% include partials/site-navigation.ejs %>
+  <article>
+        <h2>My jobs </h2>
+
+        <table>
+          <tr>
+            <th>Company</th>
+            <th>Category</th>
+            <th>My rating</th>
+            <th>Applied Status</th>
+          </tr>
+          <tr>
+            <td><a href="/categories/item/2">Facebook</a></td>
+            <td>Computer Science</td>
+            <td> <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>
+            </td>
+            <td><form action="#">
+                <input type="checkbox" name="appliedstatus" value="isapplied">
+              </form>
+            </td>
+            <td>
+                <form action="/categories/item/2">
+                    <button class="button">Apply
+                    </button>
+                </form>
+            </td>
+            <td>
+                <form action="#">
+                    <button class="button">Delete</button>
+                </form>
+
+            </td>
+          </tr>
+          <tr>
+                <td><a href="/categories/item/3">Google</a></td>
+                <td>Computer Science</td>
+                <td><span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star"></span>
+                </td>
+                <td><form action="#">
+                    <input type="checkbox" name="appliedstatus" value="isapplied">
+                  </form>
+                </td>
+                <td>
+                    <form action="/categories/item/3">
+                        <button class="button">Apply
+                        </button>
+                    </form>
+                </td>
+                <td>
+                    <form action="#">
+                        <button class="button">Delete</button>
+                    </form>
+
+                </td>
+              </tr>
+              <tr>
+                    <td><a href="/categories/item/4">Reliance</a></td>
+                    <td>Construction Engineering</td>
+                    <td><span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                    </td>
+                    <td><form action="#">
+                        <input type="checkbox" name="appliedstatus" value="isapplied" checked>
+                      </form>
+                    </td>
+                    <td>
+                        <form action="/categories/item/4">
+                            <button class="button">Apply
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="#">
+                            <button class="button">Delete</button>
+                        </form>
+
+                    </td>
+                  </tr>
+                  <tr>
+                        <td><a href="/categories/item/5">Hindalco</a></td>
+                        <td>Construction Engineering</td>
+                        <td><span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                        </td>
+                        <td><form action="/categories/item/5">
+                            <input type="checkbox" name="appliedstatus" value="isapplied">
+                          </form>
+                        </td>
+                        <td>
+                            <form action="/categories/item/5">
+                                <button class="button">Apply
+                                </button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="#">
+                                <button class="button">Delete</button>
+                            </form>
+
+                        </td>
+                      </tr>
+         </table>
+         </article>
+         <h2>Click <a href="/myitems">here</a> to share the job</h2>
+</section>
+
+
+
+<footer>
+    <p>&copy; COI Pvt Ltd<p>
+</footer>
+
+</body>
+</html>

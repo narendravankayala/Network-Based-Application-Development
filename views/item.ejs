@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Internships</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link type="text/css" rel="stylesheet" href="/assets/css/style.css"  media="screen"/>
+  <link type="text/css" rel="stylesheet" href="/assets/css/font-awesome-4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+<div class="signedstatus"><span>NotYetSignedIn</span></div>
+<% include partials/header.ejs %>
+
+<% include partials/user-navigation.ejs %>
+<section>
+  <% include partials/site-navigation.ejs %>
+  <article>
+    <p><a href="/">Home</a> >  <a href="/categories/catalog">Categories</a> > Items</p>
+        <div id="itemcontaner">
+                <img id="itemimage" src="<%= data.item.imageURL %>" alt="microsoftlogo">
+                <h2><%= data.item.itemName %></h2>
+                <p><%= data.item.catalogCategory %></p>
+                <h3>Rating: <%= data.item.rating%></h3>
+                <!-- <% include feedback.ejs %> -->
+                <!-- <form action="/feedback"><input type="submit" value="Rate"/></form> -->
+                <!-- <form action="/categories/catalog"><input type="submit" value="Back"/></form> -->
+                        <!-- <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span> -->
+        </div>
+        <div class="itembuttons">
+        <form action="/feedback">
+                <button class="button">Rate Job
+                </button>
+            </form>
+        <form action="/myitems">
+                    <button class="button">Save
+                    </button>
+        </form>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+    <p><%= data.item.description %></p>
+
+  <form action="/categories/catalog">
+      <button class="button">BackToCatalog</button>
+  </form>
+</article>
+</section>
+
+<% include partials/footer.ejs %>
+
+</body>
+</html>
