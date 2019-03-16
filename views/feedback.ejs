@@ -4,11 +4,10 @@
 <title>Internships</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link type="text/css" rel="stylesheet" href="assets/css/style.css"  media="screen"/>
+  <link type="text/css" rel="stylesheet" href="/assets/css/style.css"  media="screen"/>
 </head>
 <body>
 
-<div class="signedstatus"><span>NotYetSignedIn</span></div>
 <% include partials/header.ejs %>
 
 <% include partials/user-navigation.ejs %>
@@ -17,20 +16,32 @@
   <% include partials/site-navigation.ejs %>
 
 <article>
-  <img src="/assets/images/facebook.jpg" alt="facebook" style="width:500px;height:200px;">
+  <img src="<%= item.imageURL %>" alt="logo" style="width:500px;height:200px;">
     <h2>You are giving feedback to this item </h2>
-    <form action=#>
+    <h2><%= item.itemName %></h2>
+    <h3><%= item.catalogCategory %></h3>
+    <form method="get" action="/myitems/updateRating">
           <b>Rating:</b>
-          <select name="Rate">
+          <select name="rating">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
             <option value="4">4</option>
             <option value="5">5</option>
           </select>
-          <input type="submit" value="Confirm Rating">
-        </form><br><br><br><br><br>
-        <form action=#><input type="submit" value="I made it &#9989;"/></form>
+          <input hidden name="itemCode" value="<%= item.itemCode %>">
+          <button type="submit" class="button">Submit Rating</button>
+      </form>
+        <br><br><br><br><br>
+      <form method="get" action="/myitems/updateFlag">
+			<label>MadeIt</label>
+			<select name="madeIt">
+					<option value="0">false</option>
+					<option value="1">true</option>
+			</select>
+			<input hidden name="itemCode" value="<%= item.itemCode %>">
+			<button class="button" type="submit">MadeIt</button>
+		</form>
 </article>
 </section>
 <% include partials/footer.ejs %>

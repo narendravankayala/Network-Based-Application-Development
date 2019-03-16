@@ -8,7 +8,8 @@ module.exports.getItems = function () {
             itemDetails[i].catalogCategory,
             itemDetails[i].description,
             itemDetails[i].rating,
-            itemDetails[i].imageURL);
+            );
+            item.imageURL  = item.getImageURL(itemDetails[i].itemCode);
         items.push(item);
       }
     return items;
@@ -24,8 +25,9 @@ module.exports.getItem = function (itemCode) {
                 itemDetails[i].catalogCategory,
                 itemDetails[i].description,
                 itemDetails[i].rating,
-                itemDetails[i].imageURL);
-
+                // itemDetails[i].imageURL;
+                );
+              item.imageURL =   item.getImageURL(itemDetails[i].itemCode);
             console.log("Item"+JSON.stringify(item));
 
             return item;
@@ -41,7 +43,7 @@ var itemDetails = [
         catalogCategory: "Computer Science",
         description: "This is microsoft internship",
         rating: 5,
-        imageURL: "/assets/images/microsoft.jpg",
+        imageURL: "",
     },
     {
         itemCode: 2,
@@ -49,7 +51,7 @@ var itemDetails = [
         catalogCategory: "Computer Science",
         description: "This is Facebook Internship",
         rating: 4,
-        imageURL: "/assets/images/facebook.jpg",
+        imageURL: "",
     },
     {
         itemCode: 3,
@@ -57,7 +59,7 @@ var itemDetails = [
         catalogCategory: "Computer Science",
         description: "This is Google Internship",
         rating: 3.5,
-        imageURL: "/assets/images/google.jpg",
+        imageURL: "",
     },
     {
         itemCode: 4,
@@ -65,7 +67,7 @@ var itemDetails = [
         catalogCategory: "Construction Engineering",
         description: "This is Reliance internship",
         rating: 3.5,
-        imageURL: "/assets/images/reliance.jpg",
+        imageURL: "",
     },
     {
         itemCode: 5,
@@ -73,7 +75,7 @@ var itemDetails = [
         catalogCategory: "Construction Engineering",
         description: "This is hindalco internship",
         rating: 4.5,
-        imageURL: "/assets/images/hindalco.jpg",
+        imageURL: "",
     },
     {
         itemCode: 6,
@@ -81,8 +83,8 @@ var itemDetails = [
         catalogCategory: "Construction Engineering",
         description: "This is family business",
         rating: 4,
-        imageURL: "/assets/images/jebco.jpg",
+        imageURL: "",
     }
 ];
 
-var category = ["Computer Science", "Construction Engineering"];
+module.exports.category = ["Computer Science", "Construction Engineering"];

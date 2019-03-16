@@ -16,6 +16,9 @@ class Item {
         this._rating = rating;
         this._imageURL = imageURL;
     }
+    getImageURL(itemCode){
+      return "/assets/images/"+itemCode+".jpg"
+    }
 
 
     /**

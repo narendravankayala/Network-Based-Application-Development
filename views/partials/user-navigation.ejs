@@ -1,3 +1,28 @@
 <div class="nav-bar">
-    <a href="#">Sign In</a> | <a href="/myitems">My Jobs</a> | <a href="#">Cart</a>
+  <% if(userProfile === null){ %>
+    <form class="" action="/login" method="get">
+        <button class="button">Login</button>
+    </form>
+    <% } else { %>
+      <form class="" action="/logout" method="get">
+        <button class="button">Logout</button>
+      </form>
+    <% } %>
+    <form class="" action="/myitems" method="get">
+      <button class="button">My Jobs</button>
+    </form>
+    <form>
+      <button class="button">Cart</button>
+    </form>
+
+    <div class="signedStatus">
+		<% if(userProfile === null){ %>
+			Not Logged In
+		<% } else { %>
+			<ul><li>Welcome User</li></ul>
+		<% } %>
+
+	</div>
+
+    <!-- <a href="login">Sign In</a> | <a href="/myitems">My Jobs</a> | <a href="#">Cart</a> -->
 </div>

@@ -11,7 +11,7 @@
       overflow-x: hidden;
       height: 100%;
   }
-  
+
   /* Style the header */
   header {
     background-color: rgb(167, 47, 10);
@@ -80,13 +80,16 @@
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    display: inline-block;
+}
 
-  }
-  .button{
+  /* .button{
       float: left;
       margin: 2px;
       margin-top: 15px;
-  }
+
+      display: inline-block;
+} */
   /* #itemtext{
       float: right;
   } */
@@ -143,9 +146,17 @@
   }
 
   tr:nth-child(even) {
-    background-color: #dddddd;
+    background-color: #ffff;
   }
   /* .itembuttons{
       float: left;
       padding: 2px
   } */
+
+  .signedStatus{
+
+  	float: right;
+  	width: 100px;
+  	text-align: right;
+    color:#777;
+  }

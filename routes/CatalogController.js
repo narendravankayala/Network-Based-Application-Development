@@ -1,70 +1,302 @@
 var express = require('express');
 var router = express.Router();
 var itemDb = require('../utility/ItemDB');
+var userDb = require('../utility/UserDB');
+var session = require('express-session');
+var users = userDb.getUsers();
+var userProfile = userDb.getUsersProfile();
+var UserItem = require('../model/UserItem');
+var bodyParser = require('body-parser');
+var urlEncodedParser = bodyParser.urlencoded({
+  extended : false
+});
+
+router.post('/login', urlEncodedParser, function (req, res) {
+    var emailAddress = req.body.emailAddress;
+    var password = req.body.password;
+    var isValid = 0 ;
+    for(let i = 0 ; i < users.length; i++){
+      if(users[i].emailAddress == emailAddress && users[i].password == password){
+        req.session.theUser = users[i].userId;
+        for(let j = 0 ; j < userProfile.length; j++){
+          if(userProfile[j].userId = req.session.theUser){
+            req.session.userProfile = userProfile[j];
+            isValid = 1;
+          }
+        }
+        res.render('myitems', {userProfile : req.session.userProfile});
+      }
+    }
+    if(!isValid){
+      res.render('login', {userProfile : null});
+    }
+});
+
+router.get('/login', function (req, res) {
+    res.render('login',{userProfile : null});
+});
+
+router.get('/logout', function (req, res) {
+  req.session.destroy();
+  users = userDb.getUsers();
+  userProfile = userDb.getUsersProfile();
+  res.render('index', {userProfile : null});
+});
+
 
 router.get('/',  function(req, res) {
-  res.render('index');
+  if(req.session.theUser){
+    res.render('index',{userProfile : req.session.userProfile});
+  }
+  else{
+    res.render('index', {userProfile : null});
+  }
 });
 
 router.get('/categories/catalog', function(req, res) {
-    var categories = getCategories();
+    var category = itemDb.category;
     var itemData = itemDb.getItems();
-    var data= {
-        categories: categories,
-        items: itemData
+    if(req.session.theUser){
+      res.render('categories', {itemData :itemData, category : category, userProfile : req.session.userProfile });
     }
-    res.render('categories', { data: data });
+    else {
+      res.render('categories', {itemData : itemData, category : category, userProfile : null});
+    }
+    // var data= {
+    //     categories: categories,
+    //     items: itemData
+    // }
+    // res.render('categories', { data: data });
 });
 
 router.get('/contact', function(req, res) {
-    res.render('contact');
+  if(req.session.theUser){
+    res.render('contact', {userProfile : req.session.userProfile});
+  }
+  else {
+    res.render('contact', {userProfile : null});
+  }
+
 });
 
 router.get('/about', function(req, res) {
-    res.render('about');
+  if(req.session.theUser){
+    res.render('about', {userProfile : req.session.userProfile})
+  }else {
+    res.render('about', {userProfile : null});
+  }
+    // res.render('about');
 });
+
 
 router.get('/categories/item/:itemCode', function(req, res) {
 
     var itemCode = req.params.itemCode;
     console.log("Item Code:"+itemCode);
     var item = itemDb.getItem(itemCode);
-    if(item == null){
-      res.redirect('/categories/catalog');
+    var itemData = itemDb.getItems();
+    var category = itemDb.category;
+    if(req.session.theUser){
+      if(item === undefined){
+        res.render('categories', {itemData : itemData, category : category, userProfile : req.session.userProfile});
+      }
+      else {
+        res.render('item', { item : item, userProfile : req.session.userProfile});
+      }
     }
-
-    else{
-      var data= {item: item}
-      res.render('item', { data: data});
+    else {
+      if(item === undefined ){
+          res.render('categories', {itemData : itemData, category : category, userProfile : null});
+      }
+      else {
+        res.render('item',{item: item, userProfile : null});
+      }
     }
+    // }
+    // if(item == null){
+    //   res.redirect('/categories/catalog');
+    // }
+    //
+    // else{
+    //   var data= {item: item}
+    //   res.render('item', { data: data});
     console.log(item);
-
 });
 
 router.get('/myitems', function(req, res) {
-    res.render('myitems');
+  if(req.session.theUser){
+    res.render('myitems', {userProfile : req.session.userProfile});
+  }
+  else {
+    req.session.theUser = users[0];
+    for(let i = 0 ; i < userProfile.length; i++ ){
+      if(userProfile[i].userId = req.session.theUser.userId){
+        req.session.userProfile = userProfile[i];
+      }
+    }
+    res.render('myitems', {userProfile: req.session.userProfile});
+    // res.render('myitems', {userProfile : null});
+  }
+    // res.render('myitems');
 });
 
-
-router.get('/feedback', function(req, res) {
-    res.render('feedback');
-});
-
-
-var categories = [];
-let getCategories = function() {
-    var data = itemDb.getItems();
-    data.forEach(function (item) {
-        if(!categories.includes(item.catalogCategory)){
-            categories.push(item.catalogCategory);
+router.get('/myitems/save', function(req, res) {
+    var code = req.query.itemCode;
+    var flag =1;
+    if(req.session.theUser){
+    for(let i=0; i<req.session.userProfile.userItems.length; i++){
+      if(req.session.userProfile.userItems[i].itemCode == code){
+            flag=0;
+       }
+    }
+    if(flag == 1){
+      var newUserProfile = [];
+      var itemdata = itemDb.getItem(code);
+      if(itemdata){
+        var newUserItem = new UserItem(itemdata.itemCode,itemdata.itemName,itemdata.catalogCategory, 0, 0);
+          newUserProfile = req.session.userProfile;
+          newUserProfile.userItems.push(newUserItem);
+          req.session.userProfile = newUserProfile;
         }
-      });
-    return categories;
-};
+    }
+    res.render('myitems',{userProfile:req.session.userProfile});
+  }
+  else {
+    req.session.theUser = users[0];
+    for(let i=0;i<userProfile.length;i++){
+      if(userProfile[i].userId == req.session.theUser.userId){
+          req.session.userProfile = userProfile[i];
+      }
+    }
+    res.render('myitems',{userprofile:req.session.userProfile});
+  }
+});
+
+
+router.get('/myitems/delete', function(req, res) {
+      var code = req.query.itemCode
+      var newUserProfile = req.session.userProfile
+      for(let i=0;i<newUserProfile.userItems.length;i++){
+          if(newUserProfile.userItems[i].itemCode == req.query.itemCode){
+                newUserProfile.userItems.splice(i,1);
+          }
+      }
+      req.session.userProfile = newUserProfile;
+      res.render('myitems',{userProfile:req.session.userProfile});
+});
+
+
+router.get('/myitems/feedback', function(req, res) {
+  var code = req.query.itemCode;
+  if(req.session.theUser){
+      var item = itemDb.getItem(code);
+      if(item){
+        res.render('feedback',{item:item, userProfile:req.session.userProfile});
+      }
+      else {
+        res.render('myitems',{userProfile:req.session.userProfile});
+      }
+  }
+  else {
+      req.session.theUser = users[0];
+      for(let i=0;i<userProfile.length;i++){
+        if(userprofile[i].userId == req.session.theUser.userId){
+            req.session.userProfile = userProfile[i];
+        }
+      }
+      res.render('myitems',{userProfile:req.session.userProfile});
+}
+});
+
+router.get('/myitems/updateRating', function(req, res) {
+    var rating = req.query.rating;
+    var code= req.query.itemCode;
+    if(req.session.theUser){
+        if(rating >= 0 && rating <= 5 && rating != undefined){
+
+            var newUserProfile = req.session.userProfile;
+
+            for(let i=0; i<newUserProfile.userItems.length; i++){
+                if(code == newUserProfile.userItems[i].itemCode){
+                    newUserProfile.userItems[i].rating = rating;
+                }
+              }
+        req.session.userProfile = newUserProfile;
+        res.render('myitems',{userProfile:req.session.userProfile});
+        }
+        else {
+          res.render('myitems',{userProfile:req.session.userProfile});
+        }
+    }
+    else {
+      req.session.theUser = users[0];
+      for(let i=0;i<userProfile.length;i++){
+        if(userProfile[i].userId == req.session.theUser.userId){
+            req.session.userProfile = userProfile[i];
+        }
+      }
+      res.render('myitems',{userProfile:req.session.userProfile});
+    }
+
+});
+
+router.get('/myitems/updateFlag', function(req, res) {
+  var madeIt = req.query.madeIt;
+  var code= req.query.itemCode;
+  if(req.session.theUser){
+      if(madeIt >= 0 && madeIt <= 1 && madeIt != undefined){
+
+          var newUserProfile = req.session.userProfile;
+
+          for(let i=0; i<newUserProfile.userItems.length; i++){
+              if(code == newUserProfile.userItems[i].itemCode){
+                  newUserProfile.userItems[i].madeIt = madeIt;
+              }
+            }
+      req.session.userProfile = newUserProfile;
+      res.render('myitems',{userProfile:req.session.userProfile});
+      }
+      else {
+        res.render('myitems',{userProfile:req.session.userProfile});
+      }
+  }
+  else {
+    req.session.theUser = users[0];
+    for(let i=0;i<userProfile.length;i++){
+      if(userProfile[i].userId == req.session.theUser.userId){
+          req.session.userProfile = userProfile[i];
+      }
+    }
+    res.render('myitems',{userProfile:req.session.userProfile});
+  }
+});
+
+
+// router.get('/feedback', function(req, res) {
+//     res.render('feedback');
+// });
+
+
+// var categories = [];
+// let getCategories = function() {
+//     var data = itemDb.getItems();
+//     data.forEach(function (item) {
+//         if(!categories.includes(item.catalogCategory)){
+//             categories.push(item.catalogCategory);
+//         }
+//       });
+//     return categories;
+// };
 
 // If the itemCode is not there I am redirecting to catalog route
 router.get('/*', function(req, res) {
-    res.redirect('/categories/catalog');
+  if(req.session.theUser){
+    res.render('index', {userProfile : req.session.userProfile});
+  }
+  else {
+    res.render('index', {userProfile : null});
+  }
+    // res.redirect('/categories/catalog');
 });
 
 module.exports = router;

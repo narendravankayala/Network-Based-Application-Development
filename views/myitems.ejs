@@ -7,12 +7,11 @@
 
 
 
-      <link type="text/css" rel="stylesheet" href="assets/css/style.css"  media="screen"/>
-      <link type="text/css" rel="stylesheet" href="assets/css/font-awesome-4.7.0/css/font-awesome.min.css">
+      <link type="text/css" rel="stylesheet" href="/assets/css/style.css"  media="screen"/>
+      <link type="text/css" rel="stylesheet" href="/assets/css/font-awesome-4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 
-  <div class="signedstatus"><span>NotYetSignedIn</span></div>
   <% include partials/header.ejs %>
   <% include partials/user-navigation.ejs %>
 <section>
@@ -22,126 +21,48 @@
         <h2>My jobs </h2>
 
         <table>
-          <tr>
-            <th>Company</th>
-            <th>Category</th>
-            <th>My rating</th>
-            <th>Applied Status</th>
-          </tr>
-          <tr>
-            <td><a href="/categories/item/2">Facebook</a></td>
-            <td>Computer Science</td>
-            <td> <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-            </td>
-            <td><form action="#">
-                <input type="checkbox" name="appliedstatus" value="isapplied">
-              </form>
-            </td>
-            <td>
-                <form action="/categories/item/2">
-                    <button class="button">Apply
-                    </button>
-                </form>
-            </td>
-            <td>
-                <form action="#">
-                    <button class="button">Delete</button>
-                </form>
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Category</th>
+              <th>My rating</th>
+              <th>Applied Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%
+						for(var j=0; j< userProfile.userItems.length; j++){ %>
+    		<tr>
+      			<td><%= userProfile.userItems[j].itemName %></td>
+      			<td><%= userProfile.userItems[j].categoryName %></td>
+						<td><%= userProfile.userItems[j].rating %></td>
+						<% if(userProfile.userItems[j].madeIt == 0) { %>
+						<td>False</td>
+						<% } else { %>
+							<td>True</td>
+						<% } %>
+      			<td>
 
-            </td>
-          </tr>
-          <tr>
-                <td><a href="/categories/item/3">Google</a></td>
-                <td>Computer Science</td>
-                <td><span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star"></span>
-                </td>
-                <td><form action="#">
-                    <input type="checkbox" name="appliedstatus" value="isapplied">
-                  </form>
-                </td>
-                <td>
-                    <form action="/categories/item/3">
-                        <button class="button">Apply
-                        </button>
-                    </form>
-                </td>
-                <td>
-                    <form action="#">
-                        <button class="button">Delete</button>
-                    </form>
+      				<form method="get">
+								<input hidden name="itemCode" value="<%= userProfile.userItems[j].itemCode %>">
+								<button class="button" type="submit" formaction="/myitems/feedback">Update</button>
+								<button class="button" type="submit" formaction="/myitems/delete">Delete</button>
+							</form>
+      			</td>
+    		</tr>
+				<%	}
+			 		%>
+          </tbody>
+        </table>
 
-                </td>
-              </tr>
-              <tr>
-                    <td><a href="/categories/item/4">Reliance</a></td>
-                    <td>Construction Engineering</td>
-                    <td><span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                    </td>
-                    <td><form action="#">
-                        <input type="checkbox" name="appliedstatus" value="isapplied" checked>
-                      </form>
-                    </td>
-                    <td>
-                        <form action="/categories/item/4">
-                            <button class="button">Apply
-                            </button>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="#">
-                            <button class="button">Delete</button>
-                        </form>
-
-                    </td>
-                  </tr>
-                  <tr>
-                        <td><a href="/categories/item/5">Hindalco</a></td>
-                        <td>Construction Engineering</td>
-                        <td><span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
-                        </td>
-                        <td><form action="/categories/item/5">
-                            <input type="checkbox" name="appliedstatus" value="isapplied">
-                          </form>
-                        </td>
-                        <td>
-                            <form action="/categories/item/5">
-                                <button class="button">Apply
-                                </button>
-                            </form>
-                        </td>
-                        <td>
-                            <form action="#">
-                                <button class="button">Delete</button>
-                            </form>
-
-                        </td>
-                      </tr>
-         </table>
          </article>
-         <h2>Click <a href="/myitems">here</a> to share the job</h2>
+         <h2>Click <a href="#">here</a> to share the job</h2>
 </section>
 
 
 
-<footer>
-    <p>&copy; COI Pvt Ltd<p>
-</footer>
+<% include partials/footer.ejs %>
 
 </body>
 </html>
