@@ -7,7 +7,7 @@ class UserProfile {
     this.userItems = [];
   }
 
-  getUserItems(){
+  getItems(){
     return this.userItems;
   }
 
@@ -15,7 +15,7 @@ class UserProfile {
     this.userItems = [];
   }
 
-  removeUserItem(item){
+  removeItem(item){
     index = -1 ;
     for(i = 0 ; i < this.userItems.length; i++){
       if(this.userItems[i].itemCode == item.itemCode){
@@ -30,7 +30,7 @@ class UserProfile {
     }
 }
 
-  addUserItem(itemCode, itemName, categoryName, rating, madeIt){
+  addItem(itemCode, itemName, categoryName, rating, madeIt){
     var userItem = new UserItem(itemCode, itemName, categoryName, rating, madeIt);
     // isPresent = 0;
     // for(i = 0 ; i < this.userItems.length; i++){
@@ -46,7 +46,7 @@ class UserProfile {
     this.userItems.push(userItem);
   }
 
-  updateUserItem(userItem){
+  updateItem(userItem){
     for(i = 0 ; i < this.userItems.length; i++){
       if(this.userItems[i].itemCode == userItem.itemCode)
                 this.userItems[i].rating = userItem.rating;

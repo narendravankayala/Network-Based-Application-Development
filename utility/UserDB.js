@@ -1,112 +1,115 @@
 var User = require('../model/User');
 var UserItem = require('../model/UserItem');
 var UserProfile = require('../model/UserProfile');
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/internship');
+var Schema = mongoose.Schema;
+var usersSchema = new Schema({
+    userId : String,
+    firstName : String,
+    lastName : String,
+    emailAddress : String,
+    password : String,
+    address1 : String,
+    address2 : String,
+    city : String,
+    state : String,
+    postalCode : String,
+    country : String,
+}, {collection : 'users'});
 
-var usersData = [
-            {
-
-              userId : 1,
-              firstName : 'Narendra',
-              lastName : 'Vankayala',
-              emailAddress : 'admin1@gmail.com',
-              password : 'admin1',
-              address1 : 'barton',
-              address2 : 'apt m',
-              city : 'charlotte',
-              state : 'NC',
-              postalCode : '28262',
-              country : 'USA'
-            },
-            {
-
-              userId : 2,
-              firstName : 'Lipsa',
-              lastName : 'Rani',
-              emailAddress : 'admin2@gmail.com',
-              password : 'admin2',
-              address1 : 'bangalore',
-              address2 : '12345',
-              city : 'bangalore',
-              state : 'Karnataka',
-              postalCode : '52213',
-              country : 'India'
-            }
-]
-module.exports.getUsers = function () {
-    let users = [];
-    for(let i = 0 ; i < usersData.length ; i++){
-      let user = new User(usersData[i].userId, usersData[i].firstName, usersData[i].lastName,
-                          usersData[i].emailAddress, usersData[i].password, usersData[i].address1,
-                          usersData[i].address2, usersData[i].city, usersData[i].state, usersData[i].postalCode, usersData[i].country)
-      users.push(user);
-    }
-    return users;
+var userData = mongoose.model('users', usersSchema);
+var usersProfileSchema = new Schema({
+  userId : String,
+  itemCode : String,
+  itemName : String,
+  categoryName : String,
+  rating : String,
+  madeIt : String
+}, {collection : 'userProfile'});
+var userProfileData = mongoose.model('userProfile', usersProfileSchema);
+module.exports.getAllUsers = function () {
+  return new Promise(resolve => {
+    resolve(userData.find().then(function(allusrs){
+      return allusrs;
+    }));
+  });
+    // let users = [];
+    // for(let i = 0 ; i < usersData.length ; i++){
+    //   let user = new User(usersData[i].userId, usersData[i].firstName, usersData[i].lastName,
+    //                       usersData[i].emailAddress, usersData[i].password, usersData[i].address1,
+    //                       usersData[i].address2, usersData[i].city, usersData[i].state, usersData[i].postalCode, usersData[i].country)
+    //   users.push(user);
+    // }
+    // return users;
   }
 
-var usersProfileData = [
-
-
-  {
-    userId : 1,
-    userItems : [
-      {
-        itemCode : '1',
-        itemName : 'Microsoft',
-        categoryName : 'Computer Science',
-        rating : 4,
-        madeIt : 1
-      },
-      {
-        itemCode : '2',
-        itemName : 'Facebook',
-        categoryName : 'Computer Science',
-        rating : 5,
-        madeIt : 0
-      }
-    ]
-  }
-]
-
-module.exports.getUsersProfile = function () {
-
-    let usersProfile = [];
-    let userItems = [];
-    for (let i = 0 ; i < usersProfileData.length; i++){
-      let userProfile = new UserProfile(usersProfileData[i].userId);
-      for(let j = 0 ; j < usersProfileData[i].userItems.length; j++){
-        let userItem = new UserItem(usersProfileData[i].userItems[j].itemCode,usersProfileData[i].userItems[j].itemName,usersProfileData[i].userItems[j].categoryName, usersProfileData[i].userItems[j].rating, usersProfileData[i].userItems[j].madeIt )
-        userItems.push(userItem);
-      }
-      userProfile.userItems = userItems;
-      usersProfile.push(userProfile);
-  }
-  return usersProfile;
+module.exports.getUser = function (Id) {
+  return new Promise(resolve =>{
+    resolve(userData.find({userId : Id}).then(function(usr) {
+      return usr;
+    }));
+  });
 }
-// var allItems = itemDb.getItems();
-//
-// var user1 = new User('1', 'Narendra','Vankayala','nvankay1@uncc.edu','barton','creek','charlotte','NC','28262','USA');
-// var user2 = new User('2', 'Lipsa', 'Rani', 'lip@gmail.com', 'baarton', 'creek', 'charlotte', 'NC', '28222', 'India');
-// var userItem1 = new UserItem(allItems[0],'4', 'true');
-// var userItem2 = new UserItem(allItems[2],'3', 'false');
-// var userItem3 = new UserItem(allItems[4],'5', 'true');
-//
-//
-// var userProfile1= new UserProfile(user1.userId, [userItem1, userItem2]);
-// var userProfile2 = new UserProfile(user2.userId, [useritem1, userItem3, userItem2]);
-//
-//
-// var allUsers = [user1, user2];
-// var allUserItems = [useritem1, userItem2, userItem3];
-// var allUserProfiles = [userProfile1, userProfile2];
-//
-// module.exports.getUsers = function () {
-//   return allUsers;
+
+module.exports.getUsersProfile = function (Id) {
+  return new Promise(resolve =>{
+    resolve(userProfileData.find({userId: Id}).then(function(usrprfl){
+      return usrprfl;
+    }));
+  })
+}
+// module.exports.getUserProfile = function (Id) {
+//   return new Promise(resolve =>{
+//     resolve(userProfileData.find({userId : Id}).then(function (d) {
+//       return d;
+//     }));
+//   });
 // }
-// module.exports.getUserProfile = function (userId) {
+
+module.exports.addItem = function (item, user) {
+  return new Promise(resolve =>{
+    resolve(userProfileData.find({userId : user.userId, itemCode:item.itemCode}, function (err, d) {
+      if (d.length === 0){
+        var itm = {
+          userId : user.userId,
+          itemCode : item.itemCode,
+          itemName : item.itemName,
+          categoryName : item.catalogCategory,
+          rating : item.rating,
+          madeIt : "0"
+        }
+        var data = new userProfileData(itm)
+        data.save()
+        return "addedItem"
+      }
+  })
+)
+  })
+}
 
 
-// }
-// var
-//
-//
-// module.exports = userProfile1;
+
+module.exports.deleteItem = function (code, id) {
+  return new Promise(resolve =>{
+    resolve(userProfileData.findOneAndDelete({userId : id.userId, itemCode: code}).exec(function(err) {
+          return "deleted";
+    }))
+  })
+}
+
+module.exports.updateFlag = function (code, id, madeIt) {
+  return new Promise(resolve =>{
+    resolve(userProfileData.findOneAndUpdate({userId : id.userId, itemCode : code}, {madeIt : madeIt}).exec(function (err) {
+      return "updatedFalg";
+    }))
+  })
+}
+
+module.exports.updateRating = function (code, id , rating) {
+  return new Promise(resolve =>{
+    resolve( userProfileData.findOneAndUpdate({userId : id.userId, itemCode: code}, {rating : rating}).exec(function (err) {
+        return "updatedRating"
+    }))
+  })
+}

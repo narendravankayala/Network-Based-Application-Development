@@ -36,8 +36,10 @@
       <form method="get" action="/myitems/updateFlag">
 			<label>MadeIt</label>
 			<select name="madeIt">
-					<option value="0">false</option>
-					<option value="1">true</option>
+        
+					<option value="1" selected>True</option>
+					<option value="0">False</option>
+
 			</select>
 			<input hidden name="itemCode" value="<%= item.itemCode %>">
 			<button class="button" type="submit">MadeIt</button>

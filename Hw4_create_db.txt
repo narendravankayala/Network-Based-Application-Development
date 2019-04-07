@@ -1,0 +1,86 @@
+use internship
+db.itemDb.drop()
+db.users.drop()
+db.userProfile.drop()
+db.createCollection("itemDb")
+db.createCollection("users")
+db.createCollection("userProfile")
+db.itemDb.insert([{
+    itemCode: '1',
+    itemName: "Microsoft",
+    catalogCategory: "Computer Science",
+    description: "This is microsoft internship",
+    rating: '5',
+    imageURL: "",
+},
+{
+    itemCode: '2',
+    itemName: "Facebook",
+    catalogCategory: "Computer Science",
+    description: "This is Facebook Internship",
+    rating: '4',
+    imageURL: "",
+},
+{
+    itemCode: '3',
+    itemName: "Google",
+    catalogCategory: "Computer Science",
+    description: "This is Google Internship",
+    rating: '3.5',
+    imageURL: "",
+},
+{
+    itemCode: '4',
+    itemName: "Reliance",
+    catalogCategory: "Construction Engineering",
+    description: "This is Reliance internship",
+    rating: '3.5',
+    imageURL: "",
+},
+{
+    itemCode: '5',
+    itemName: "Hindalco",
+    catalogCategory: "Construction Engineering",
+    description: "This is hindalco internship",
+    rating: '4.5',
+    imageURL: "",
+},
+{
+    itemCode: '6',
+    itemName: "Vankayala Constructions",
+    catalogCategory: "Construction Engineering",
+    description: "This is family business",
+    rating: '4',
+    imageURL: "",
+}])
+db.users.insert({
+  userId : '1',
+  firstName : 'Narendra',
+  lastName : 'Vankayala',
+  emailAddress : 'admin1@gmail.com',
+  password : 'admin1',
+  address1 : 'barton',
+  address2 : 'apt m',
+  city : 'charlotte',
+  state : 'NC',
+  postalCode : '28262',
+  country : 'USA'
+})
+db.userProfile.insert([
+  {
+    userId : '1',
+    itemCode : '1',
+    itemName : 'Microsoft',
+    categoryName : 'Computer Science',
+    rating : 4,
+    madeIt : 1
+  },
+  {
+    userId : '1',
+    itemCode : '2',
+    itemName : 'Facebook',
+    categoryName : 'Computer Science',
+    rating : 5,
+    madeIt : 0
+  }
+])
