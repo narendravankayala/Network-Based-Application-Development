@@ -44,9 +44,11 @@ module.exports.getAllUsers = function () {
     // return users;
   }
 
-module.exports.getUser = function (Id) {
+module.exports.getUser = function (emailAddress, password) {
+  console.log(emailAddress, password);
   return new Promise(resolve =>{
-    resolve(userData.find({userId : Id}).then(function(usr) {
+    resolve(userData.findOne({emailAddress : emailAddress, password : password}).then(function(usr) {
+      console.log(usr);
       return usr;
     }));
   });
@@ -54,7 +56,10 @@ module.exports.getUser = function (Id) {
 
 module.exports.getUsersProfile = function (Id) {
   return new Promise(resolve =>{
+
     resolve(userProfileData.find({userId: Id}).then(function(usrprfl){
+      console.log(Id);
+      // console.log(usrprf1);
       return usrprfl;
     }));
   })

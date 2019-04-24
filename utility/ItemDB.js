@@ -48,7 +48,10 @@ module.exports.getItem = function (itemCode) {
   return new Promise(resolve =>{
     resolve(itemData.find({itemCode:itemCode}).then(function (it) {
       let item = new Item();
+      if (it.length > 0) {
       it[0].imageURL = item.getImageURL(it[0].itemCode);
+      }
+
       return it[0]
     })
   );

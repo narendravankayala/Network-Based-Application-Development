@@ -10,6 +10,8 @@ var bodyParser = require('body-parser');
 var urlEncodedParser = bodyParser.urlencoded({
   extended : false
 });
+const { check , validationResult} = require('express-validator/check')
+
 
 
 router.get('/',  function(req, res) {
@@ -23,26 +25,41 @@ router.get('/',  function(req, res) {
 
 
 router.post('/login', urlEncodedParser, function (req, res) {
+
     var emailAddress = req.body.emailAddress;
     var password = req.body.password;
-    var isValid = 0 ;
-    userDb.getAllUsers().then(function(users){
-      for(let i = 0 ; i < users.length; i++){
-        if(users[i].emailAddress == emailAddress && users[i].password == password){
-          req.session.theUser = users[i].userId;
-          userDb.getUsersProfile(req.session.theUser).then(function(userProfile){
-            req.session.userProfile = userProfile
-            res.render('myitems', {userProfile : req.session.userProfile})
+    // var isValid = 0 ;
+    userDb.getUser(emailAddress, password).then(function(users){
+      if (users) {
+        console.log(req.session.theUser, "Valid user");
+        req.session.theUser = users;
+        userDb.getUsersProfile(req.session.theUser.userId).then(function(userProfile){
+          console.log(req.session.theUser.userId);
+          req.session.userProfile = userProfile
+          res.render('myitems', {userProfile : req.session.userProfile})
+        });
+      }
+      else {
+        res.render('login', {userProfile : null, isLogin : 1});
+      }
+      // for(let i = 0 ; i < users.length; i++){
+      //   if(users[i].emailAddress == emailAddress && users[i].password == password){
+      //     req.session.theUser = users[i];
+      //     userDb.getUsersProfile(req.session.theUser.userId).then(function(userProfile){
+      //       req.session.userProfile = userProfile
+      //       res.render('myitems', {userProfile : req.session.userProfile})
 
     });
+
+
 
 
         // for(let j = 0 ; j < userProfile.length; j++){
           // if(userProfile[j].userId = req.session.theUser){
             // req.session.userProfile = userProfile[j];
             // isValid = 1;
-          }
-        }
+
+
         // res.render('myitems', {userProfile : req.session.userProfile});
       // }
     // }
@@ -50,11 +67,10 @@ router.post('/login', urlEncodedParser, function (req, res) {
     //   res.render('login', {userProfile : null});
     // }
 });
-});
 
 
 router.get('/login', function (req, res) {
-    res.render('login',{userProfile : null});
+    res.render('login',{userProfile : null, isLogin : 0});
 });
 
 router.get('/logout', function (req, res) {
